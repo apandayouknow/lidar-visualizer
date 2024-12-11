@@ -25,6 +25,7 @@ ENEMYTEAM = (221, 184, 110)
 CIRCLE_RADIUS = 30  # Diameter is 90
 NUM_CIRCLES = 4
 RAYS_DEFAULT = 24
+rays_diff = 0
 
 ROTATION_STEP = math.radians(5)
 rotation_angle = 0
@@ -140,7 +141,7 @@ def cast_rays(center, num_rays):
 
 # Main loop
 running = True
-num_rays = RAYS_DEFAULT
+num_rays = RAYS_DEFAULT 
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -170,10 +171,14 @@ while running:
                 rotation_angle -= ROTATION_STEP
             elif event.key == pygame.K_RIGHT:
                 rotation_angle += ROTATION_STEP
-            if event.key == pygame.K_DOWN:
+            elif event.key == pygame.K_DOWN:
                 tilt_angle -= TILT_STEP
             elif event.key == pygame.K_UP:
                 tilt_angle += TILT_STEP
+            elif event.key == pygame.K_MINUS:
+                num_rays -= 1
+            elif event.key == pygame.K_EQUALS:
+                num_rays += 1
 
             
 
@@ -206,10 +211,15 @@ while running:
         text = font.render(f"{wall.capitalize()} collisions: {count}", True, BLACK)
         screen.blit(text, (WIDTH + 10, y_offset))
         y_offset += 30
-    text = font.render(f"TILT: {round(math.degrees(tilt_angle))}", True, BLACK)
+    text = font.render(f"Tilt: {round(math.degrees(tilt_angle))}", True, BLACK)
     screen.blit(text, (WIDTH + 10, y_offset))
-    text = font.render(f"ROTATION: {round(math.degrees(rotation_angle))}", True, BLACK)
-    screen.blit(text, (WIDTH + 10, y_offset + 30))
+    y_offset += 30
+    text = font.render(f"Rotation: {round(math.degrees(rotation_angle))}", True, BLACK)
+    screen.blit(text, (WIDTH + 10, y_offset))
+    y_offset += 30
+    text = font.render(f"Number of Rays: {num_rays}", True, BLACK)
+    screen.blit(text, (WIDTH + 10, y_offset))
+    y_offset += 30
 
     # Update display
     pygame.display.flip()
